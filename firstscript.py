@@ -96,3 +96,25 @@
 # # Print every index in row 8, but with a step of two
 # print(data[0][::2])  # header
 # print(data[8][::2])
+
+# *********** PARTE 7: É dificil saber qual coluna corresponde à que variável.
+# É mais interessante abrir o dado como um dicionário, ao invés de lista
+# Ao invés de buscar por índice na row, podemos buscar por variável (tempo, T)
+# Ao invés de colchetes, abrimos chaves. Ao invés de lista, dicionário...
+# Initialize my data variable
+data = {'date': [], 'time': [], 'tempout': []}
+filename = "wxobs20170821.txt"
+with open(filename, 'r') as datafile:
+    #
+    for _ in range(3):  # Read the first three lines (header)
+        datafile.readline()  # Se não ler as primeiras linhas vai dar erro --?
+    #
+    # Read and parse the rest of the file
+    for line in datafile:
+        split_line = line.split()
+        data['date'].append(split_line[0])
+        data['time'].append(split_line[1])
+        data['tempout'].append(split_line[2])
+
+# DEBUG
+print(data['time'])
