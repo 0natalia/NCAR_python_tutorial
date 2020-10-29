@@ -102,19 +102,84 @@
 # Ao invés de buscar por índice na row, podemos buscar por variável (tempo, T)
 # Ao invés de colchetes, abrimos chaves. Ao invés de lista, dicionário...
 # Initialize my data variable
-data = {'date': [], 'time': [], 'tempout': []}
+# data = {'date': [], 'time': [], 'tempout': []}
+# filename = "wxobs20170821.txt"
+# with open(filename, 'r') as datafile:
+#     #
+#     for _ in range(3):  # Read the first three lines (header)
+#         datafile.readline()  # Se não ler as primeiras linhas vai dar erro -?
+#     #
+#     # Read and parse the rest of the file
+#     for line in datafile:
+#         split_line = line.split()
+#         # print(split_line)
+#         # Pega a coluna na lista do arquivo e adiciona à variável
+#         data['date'].append(split_line[0])
+#         data['time'].append(split_line[1])
+#         data['tempout'].append(split_line[2])
+
+# DEBUG
+# print(data['time'])
+
+# *********** PARTE 8: As nossas variáveis ainda estão na forma de strings.
+# Não podemos analisá-las desse jeito. Portanto, aqui vamos apenas inserir o
+# comando float nas linhas de append, assim, podemos adicionar os dados
+# como números nas listas, não adicionar strings.
+# data = {'date': [], 'time': [], 'tempout': []}
+# filename = "wxobs20170821.txt"
+# with open(filename, 'r') as datafile:
+#     #
+#     for _ in range(3):  # Read the first three lines (header)
+#         datafile.readline()  # Se não ler as primeiras linhas vai dar erro -?
+#     #
+#     # Read and parse the rest of the file
+#     for line in datafile:
+#         split_line = line.split()
+#         # print(split_line)
+#         # Pega a coluna na lista do arquivo e adiciona à variável
+#         data['date'].append(split_line[0])
+#         data['time'].append(split_line[1])
+#         data['tempout'].append(float(split_line[2]))  # !!!!!!!!! FLOAT AQUI
+
+# # DEBUG
+# print(data['tempout'])
+
+# *********** PARTE 9: E se quisermos adicionar mais variáveis ao dicionário?
+# Os índices [0, 1, 2] correspondem à coluna no dado
+columns = {'date': 0, 'time': 1, 'tempout': 2}
+
+# Queremos ler a coluna de temperaturas como float
+# Data types for each column (only if non-string)
+types = {'tempout': float}
+
+# Não vamos mais estabelecer quais as variáveis/listas dentro do dicionário.
+# Vamos usar um loop for que fará isso automaticamnete
+data = {}
+for column in columns:
+    data[column] = []
+# Faz um dicionário com as variáveis como listas vazias.
+# Mesmo que o comando da parte 8
+
+# Read and parse the data file
 filename = "wxobs20170821.txt"
 with open(filename, 'r') as datafile:
-    #
-    for _ in range(3):  # Read the first three lines (header)
-        datafile.readline()  # Se não ler as primeiras linhas vai dar erro --?
-    #
+
+    # Read the first three lines (header)
+    for _ in range(3):
+        datafile.readline()
+
     # Read and parse the rest of the file
     for line in datafile:
         split_line = line.split()
-        data['date'].append(split_line[0])
-        data['time'].append(split_line[1])
-        data['tempout'].append(split_line[2])
+        for column in columns:
+            i = columns[column]
+            t = types.get(column, str)
+            # data['float'] ---> str
+            # tenta achar os dados do tipo float, mas se não achar, lê como str
+            value = t(split_line[i])  # como fizemos float(split_line[coluna])
+            data[column].append(value)  # append automático com o dado no
+            # formato correto para cada variável/lista
 
 # DEBUG
-print(data['time'])
+print(data['date'])
+print(data['tempout'])
