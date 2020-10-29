@@ -7,6 +7,7 @@
 # filename = 'wxobs20170821.txt'
 # datafile = open(filename, 'r')
 # # # a cada chamada vai lendo as linhas em sequencia
+
 # # print(datafile.readline())
 # # print(datafile.readline())
 # # print(datafile.readline())
@@ -19,6 +20,7 @@
 # datafile = open(filename, 'r')
 # data = datafile.read()
 # datafile.close()
+# DEBUG
 # print(data)
 
 # *********** PARTE 3: Abrir com a função with
@@ -27,10 +29,70 @@
 # filename = 'wxobs20170821.txt'
 # with open(filename, 'r') as datafile:
 #     data = datafile.read()
-
+# DEBUG
 # print(data)
 
 # *********** PARTE 4: Descobrir qual o tipo de dado
-filename = 'wxobs20170821.txt'
-with open(filename, 'r') as datafile:
-    data = datafile.read()
+# filename = 'wxobs20170821.txt'
+# with open(filename, 'r') as datafile:
+#     data = datafile.read()
+
+# *********** PARTE 5: Initialize data variable with dictionary
+# data = []
+# filename = 'wxobs20170821.txt'
+# with open(filename, 'r') as datafile:
+#     #
+#     for _ in range(3):  # same as loop in a list [0, 1, 2]
+#         # print(_). # Just to see what is the _, which is the same as i..
+#         datafile.readline()  # read one line three times
+#     #
+#     for line in datafile:  # Read and parse all the file but the header
+#         # print(line)
+#         datum = line.split()  # Faz uma lista de "listas"
+#         data.append(datum)  # Adiciona uma lista ao final do dicionário
+
+# # DEBUG
+# for datum in data:
+#     print(datum)
+
+# *********** PARTE 6: Usar os índices para localizar os dados
+# data = []
+# filename = 'wxobs20170821.txt'
+# with open(filename, 'r') as datafile:
+#     #
+#     for line in datafile:  # Read and parse all the file but the header
+#         # print(line)
+#         datum = line.split()  # Faz uma lista de "listas"
+#         data.append(datum)  # Adiciona uma lista ao final do dicionário
+
+# # DEBUG
+# print(data[0])  # first index
+# print(data[-1])  # negative index works for reverse indices in list
+# print(data[0:10])  # start and stop at these indices
+
+# # A better way to look at the output:
+# for datum in data[0:10]:
+#     print(datum)  # imprime cada linha de uma vez
+
+# # If you don't specify your start, it will always initialize in index 0:
+# for datum in data[:10]:
+#     print(datum)
+
+# # You can also set the step in your range:
+# for datum in data[0:10:2]:
+#     print(datum)  # imprime a cada 2 linhas
+
+# # Print the fifth element of the ninith row in data:
+# print(data[8][4])
+
+# # Since we're dealing with strings, we can select which character we want.
+# # For instance, the first charactere of the fifth element in the ninith row:
+# print(data[8][4][0])
+
+# # Print the five first indices of row nine
+# print(data[0][:5])  # header
+# print(data[8][:5])
+
+# # Print every index in row 8, but with a step of two
+# print(data[0][::2])  # header
+# print(data[8][::2])
