@@ -245,13 +245,72 @@
 # # DEBUG
 # print(data['windspeed'])
 
-# *********** PARTE 12: Escrevendo nossa função
-columns = {'date': 0, 'time': 1, 'tempout': 2, 'windspeed': 7}
-# Velocidade do vento na coluna 7
+# # *********** PARTE 12: Escrevendo nossa função, que le os dados de vento
+# columns = {'date': 0, 'time': 1, 'tempout': 2, 'windspeed': 7}
+
+# # Data types for each column (only if non-string)
+# types = {'tempout': float, 'windspeed': float}
+
+# data = {}
+# for column in columns:
+#     data[column] = []
+
+# # Read and parse the data file
+# filename = "wxobs20170821.txt"
+# with open(filename, 'r') as datafile:
+
+#     # Read the first three lines (header)
+#     for _ in range(3):
+#         datafile.readline()
+
+#     # Read and parse the rest of the file
+#     for line in datafile:
+#         split_line = line.split()
+#         for column in columns:
+#             i = columns[column]
+#             t = types.get(column, str)
+#             # data['float'] ---> str
+#             # tenta achar os dados do tipo float, mas se não achar, lê como str
+#             value = t(split_line[i])
+#             data[column].append(value)
+
+# # Definimos uma função, a qual o nome explicita o que faz e entre
+# # () quais argumentos ela irá usar para os cálculos
+# def compute_windchill(t, v):
+
+#     a = 35.74
+#     b = 0.6215
+#     c = 35.75
+#     d = 0.4275
+
+#     v16 = v ** 0.16
+
+#     wci = a + (b * t) - (c * v16) + (d * t * v16)
+
+#     # Nenhuma outra variável definida dentro da função fica disponível para
+#     # o resto do código (ex. se chamar a, b, c, d e v16 fora fora da função
+#     # não vai existir). Apenas a variável de retorno pode ser usada depois
+#     return wci
+
+
+# # # DEBUG: Running the function to comput wci
+# # # Vamos rodar nossa função usando zip.
+# # # Zip pega os elementos de interesse da matriz e ignora os outros.
+# # Aqui, 5 está fora da matriz, então é ignorado
+# # for i, j in zip([1, 2], [3, 4, 5]):
+# #     print(i, j)
+# windchill = []
+# for temp, windspeed in zip(data['tempout'], data['windspeed']):
+#     windchill.append(compute_windchill(temp, windspeed))
+
+# *********** PARTE 13: Comparar o valor de wind chill calculado com o que
+# já veio no dado (se olharmos no header, veremos que esse dado vem na
+# coluna 13 -- indice 12)
+
+columns = {'date': 0, 'time': 1, 'tempout': 2, 'windspeed': 7, 'wchill': 12}
 
 # Data types for each column (only if non-string)
-types = {'tempout': float, 'windspeed': float}
-# Velocidade do vento vem no formato de número
+types = {'tempout': float, 'windspeed': float, 'wchill': float}
 
 data = {}
 for column in columns:
@@ -278,6 +337,8 @@ with open(filename, 'r') as datafile:
 
 # Definimos uma função, a qual o nome explicita o que faz e entre
 # () quais argumentos ela irá usar para os cálculos
+
+
 def compute_windchill(t, v):
 
     a = 35.74
@@ -301,11 +362,21 @@ def compute_windchill(t, v):
 # Aqui, 5 está fora da matriz, então é ignorado
 # for i, j in zip([1, 2], [3, 4, 5]):
 #     print(i, j)
-
 windchill = []
 for temp, windspeed in zip(data['tempout'], data['windspeed']):
     windchill.append(compute_windchill(temp, windspeed))
 
-print(windchill)
+# Comparar os valores de WChill calculados e dos dados
+# for wc_data, wc_comp in zip(data['wchill'], windchill):
+#     print(f'{wc_data: .5f} {wc_comp: .5f} {wc_data - wc_comp: .5f}')
 
+# Reescrevendo os ultimos comandos para melhorar a aprsentação
+# Vamos incluir prints antes do loop como header para auxiliar na visualização
+print(' DATE   TIME     WC_ORIG    WC_COMP    WC_DIFF')
+print('------- ------  ---------  ---------  ----------')
+# Colocamos as linhas como marcações para cada output
 
+zip_data = zip(data['date'], data['time'], data['wchill'], windchill)
+for date, time, wc_orig, wc_comp in zip_data:
+    wc_diff = wc_orig - wc_comp
+    print(f'{date} {time: >6} {wc_orig: 9.6f} {wc_comp:9.6f}  {wc_diff:10.6f}')
