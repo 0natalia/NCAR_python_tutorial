@@ -184,30 +184,30 @@
 # print(data['date'])
 # print(data['tempout'])
 
-# *********** PARTE 10: Vamos construir uma função que lê
-# velocidade e direção do vento, e retorna um índice
-columns = {'date': 0, 'time': 1, 'tempout': 2}
+# # *********** PARTE 10: Vamos construir uma função que lê
+# # velocidade e direção do vento, e retorna um índice
+# columns = {'date': 0, 'time': 1, 'tempout': 2}
 
-# Queremos ler a coluna de temperaturas como float
-# Data types for each column (only if non-string)
-types = {'tempout': float}
+# # Queremos ler a coluna de temperaturas como float
+# # Data types for each column (only if non-string)
+# types = {'tempout': float}
 
-# Não vamos mais estabelecer quais as variáveis/listas dentro do dicionário.
-# Vamos usar um loop for que fará isso automaticamnete
-data = {}
-for column in columns:
-    data[column] = []
-# Faz um dicionário com as variáveis como listas vazias.
-# Mesmo que o comando da parte 8
+# # Não vamos mais estabelecer quais as variáveis/listas dentro do dicionário.
+# # Vamos usar um loop for que fará isso automaticamnete
+# data = {}
+# for column in columns:
+#     data[column] = []
+# # Faz um dicionário com as variáveis como listas vazias.
+# # Mesmo que o comando da parte 8
 
-# Read and parse the data file
-filename = "wxobs20170821.txt"
-with open(filename, 'r') as datafile:
+# # Read and parse the data file
+# filename = "wxobs20170821.txt"
+# with open(filename, 'r') as datafile:
 
-    # Read the first three lines (header)
-    for _ in range(3):
-        headerline = datafile.readline()
-        print(headerline)
+#     # Read the first three lines (header)
+#     for _ in range(3):
+#         headerline = datafile.readline()
+#         print(headerline)
 
 # # *********** PARTE 11: Com o print do header no passo 10,
 # # descobrimos que os dados de vento correspondem aos índices 7 e 8.
@@ -244,3 +244,68 @@ with open(filename, 'r') as datafile:
 
 # # DEBUG
 # print(data['windspeed'])
+
+# *********** PARTE 12: Escrevendo nossa função
+columns = {'date': 0, 'time': 1, 'tempout': 2, 'windspeed': 7}
+# Velocidade do vento na coluna 7
+
+# Data types for each column (only if non-string)
+types = {'tempout': float, 'windspeed': float}
+# Velocidade do vento vem no formato de número
+
+data = {}
+for column in columns:
+    data[column] = []
+
+# Read and parse the data file
+filename = "wxobs20170821.txt"
+with open(filename, 'r') as datafile:
+
+    # Read the first three lines (header)
+    for _ in range(3):
+        datafile.readline()
+
+    # Read and parse the rest of the file
+    for line in datafile:
+        split_line = line.split()
+        for column in columns:
+            i = columns[column]
+            t = types.get(column, str)
+            # data['float'] ---> str
+            # tenta achar os dados do tipo float, mas se não achar, lê como str
+            value = t(split_line[i])
+            data[column].append(value)
+
+# Definimos uma função, a qual o nome explicita o que faz e entre
+# () quais argumentos ela irá usar para os cálculos
+def compute_windchill(t, v):
+
+    a = 35.74
+    b = 0.6215
+    c = 35.75
+    d = 0.4275
+
+    v16 = v ** 0.16
+
+    wci = a + (b * t) - (c * v16) + (d * t * v16)
+
+    # Nenhuma outra variável definida dentro da função fica disponível para
+    # o resto do código (ex. se chamar a, b, c, d e v16 fora fora da função
+    # não vai existir). Apenas a variável de retorno pode ser usada depois
+    return wci
+
+
+# # DEBUG: Running the function to comput wci
+# # Vamos rodar nossa função usando zip.
+# # Zip pega os elementos de interesse da matriz e ignora os outros.
+# Aqui, 5 está fora da matriz, então é ignorado
+# for i, j in zip([1, 2], [3, 4, 5]):
+#     print(i, j)
+
+windchill = []
+for temp, windspeed in zip(data['tempout'], data['windspeed']):
+    windchill.append(compute_windchill(temp, windspeed))
+
+print(windchill)
+
+
