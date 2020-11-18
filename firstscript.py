@@ -144,8 +144,48 @@
 # # DEBUG
 # print(data['tempout'])
 
-# *********** PARTE 9: E se quisermos adicionar mais variáveis ao dicionário?
-# Os índices [0, 1, 2] correspondem à coluna no dado
+# # *********** PARTE 9: E se quisermos adicionar mais variáveis ao dicionário?
+# # Os índices [0, 1, 2] correspondem à coluna no dado
+# columns = {'date': 0, 'time': 1, 'tempout': 2}
+
+# # Queremos ler a coluna de temperaturas como float
+# # Data types for each column (only if non-string)
+# types = {'tempout': float}
+
+# # Não vamos mais estabelecer quais as variáveis/listas dentro do dicionário.
+# # Vamos usar um loop for que fará isso automaticamnete
+# data = {}
+# for column in columns:
+#     data[column] = []
+# # Faz um dicionário com as variáveis como listas vazias.
+# # Mesmo que o comando da parte 8
+
+# # Read and parse the data file
+# filename = "wxobs20170821.txt"
+# with open(filename, 'r') as datafile:
+
+#     # Read the first three lines (header)
+#     for _ in range(3):
+#         datafile.readline()
+
+#     # Read and parse the rest of the file
+#     for line in datafile:
+#         split_line = line.split()
+#         for column in columns:
+#             i = columns[column]
+#             t = types.get(column, str)
+#             # data['float'] ---> str
+#             # tenta achar os dados do tipo float, mas se não achar, lê como str
+#             value = t(split_line[i])  # como fizemos float(split_line[coluna])
+#             data[column].append(value)  # append automático com o dado no
+#             # formato correto para cada variável/lista
+
+# # DEBUG
+# print(data['date'])
+# print(data['tempout'])
+
+# *********** PARTE 10: Vamos construir uma função que lê
+# velocidade e direção do vento, e retorna um índice
 columns = {'date': 0, 'time': 1, 'tempout': 2}
 
 # Queremos ler a coluna de temperaturas como float
@@ -166,20 +206,41 @@ with open(filename, 'r') as datafile:
 
     # Read the first three lines (header)
     for _ in range(3):
-        datafile.readline()
+        headerline = datafile.readline()
+        print(headerline)
 
-    # Read and parse the rest of the file
-    for line in datafile:
-        split_line = line.split()
-        for column in columns:
-            i = columns[column]
-            t = types.get(column, str)
-            # data['float'] ---> str
-            # tenta achar os dados do tipo float, mas se não achar, lê como str
-            value = t(split_line[i])  # como fizemos float(split_line[coluna])
-            data[column].append(value)  # append automático com o dado no
-            # formato correto para cada variável/lista
+# # *********** PARTE 11: Com o print do header no passo 10,
+# # descobrimos que os dados de vento correspondem aos índices 7 e 8.
+# # Agora vamos lê-los e adicioná-los ao docionário
+# columns = {'date': 0, 'time': 1, 'tempout': 2, 'windspeed': 7}
+# # Velocidade do vento na coluna 7
 
-# DEBUG
-print(data['date'])
-print(data['tempout'])
+# # Data types for each column (only if non-string)
+# types = {'tempout': float, 'windspeed': float}
+# # Velocidade do vento vem no formato de número
+
+# data = {}
+# for column in columns:
+#     data[column] = []
+
+# # Read and parse the data file
+# filename = "wxobs20170821.txt"
+# with open(filename, 'r') as datafile:
+
+#     # Read the first three lines (header)
+#     for _ in range(3):
+#         datafile.readline()
+
+#     # Read and parse the rest of the file
+#     for line in datafile:
+#         split_line = line.split()
+#         for column in columns:
+#             i = columns[column]
+#             t = types.get(column, str)
+#             # data['float'] ---> str
+#             # tenta achar os dados do tipo float, mas se não achar, lê como str
+#             value = t(split_line[i])
+#             data[column].append(value)
+
+# # DEBUG
+# print(data['windspeed'])
